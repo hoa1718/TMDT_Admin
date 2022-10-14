@@ -15,15 +15,15 @@ function Sidebar(props) {
       id="accordionSidebar"
     >
       {/* Sidebar - Brand */}
-      <a
+      <Link
         className="sidebar-brand d-flex align-items-center justify-content-center"
-        href="index.html"
+        to="/"
       >
         <div className="sidebar-brand-icon rotate-n-15">
           <img src={logo} className="sidebar-logo" alt="logo"></img>
         </div>
         <div className="sidebar-brand-text mx-3">PHK Figure</div>
-      </a>
+      </Link>
       {/* Divider */}
       <hr className="sidebar-divider my-0" />
       {/* Nav Item - Dashboard */}
@@ -65,6 +65,14 @@ function Sidebar(props) {
         <Link className="nav-link" to="/CuaHang">
           <i className="fas fa-store"></i>
           <span>Giới thiệu cửa hàng</span>
+        </Link>
+      </li>
+      <hr className="sidebar-divider my-0" />
+      {/* Heading */}
+      <li className="nav-item active">
+        <Link className="nav-link" to="/Nhap">
+        <i class="fas fa-solid fa-box-open"></i>
+          <span>Nhập kho </span>
         </Link>
       </li>
       {/* Divider */}

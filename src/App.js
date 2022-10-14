@@ -5,6 +5,7 @@ import DonHangPage from "./pages/admin/DonHang";
 import KhachHangPage from "./pages/admin/KhachHang";
 import SanPhamPage from "./pages/admin/SanPham";
 import CuaHangPage from "./pages/admin/CuaHang";
+import NhapKhoPage from "./pages/admin/NhapKho";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
@@ -14,14 +15,17 @@ function App() {
       <div id="content-wrapper" className="d-flex flex-column">
         <div className="content">
           <Topnav></Topnav>
-            <Routes>
-              <Route path="/" element={<ThongKePage/>}></Route>
-              <Route path="/ThongKe" element={<ThongKePage />}></Route>
-              <Route path="/DonHang" element={<DonHangPage />}></Route>
-              <Route path="/KhachHang" element={<KhachHangPage />}></Route>
-              <Route path="/SanPham" element={<SanPhamPage />}></Route>
-              <Route path="/CuaHang" element={<CuaHangPage />}></Route>
-            </Routes>
+  
+              <Routes>
+                <Route path="/" element={<ThongKePage/>}></Route>
+                <Route path="/ThongKe" element={<ThongKePage />}></Route>
+                <Route path="/DonHang" element={<DonHangPage />}></Route>
+                <Route path="/KhachHang" element={<KhachHangPage />}></Route>
+                <Route path="/SanPham" element={<SanPhamPage />}></Route>
+                <Route path="/CuaHang" element={<CuaHangPage />}></Route>
+                <Route path="/Nhap" element={<NhapKhoPage/>}></Route>
+              </Routes>
+     
         </div>
       </div>
       </BrowserRouter>
