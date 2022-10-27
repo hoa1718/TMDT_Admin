@@ -56,7 +56,7 @@ function Dashboard() {
                 </div>
               </div>
               <div className="col-auto">
-                <i class="fas fa-solid fa-cash-register fa-2x text-gray-300"></i>
+                <i className="fas fa-solid fa-cash-register fa-2x text-gray-300"></i>
             
               </div>
             </div>
@@ -75,7 +75,7 @@ function Dashboard() {
                 <div className="h5 mb-0 font-weight-bold text-gray-800">18</div>
               </div>
               <div className="col-auto">
-                <i class="fas fa-solid fa-receipt fa-2x text-gray-300"></i>
+                <i className="fas fa-solid fa-receipt fa-2x text-gray-300"></i>
               </div>
             </div>
           </div>

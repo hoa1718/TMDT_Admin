@@ -1,10 +1,13 @@
+import { Link } from "react-router-dom";
+import React, { useState } from "react";
 function TableDonHang() {
+  const [donHang, setDonHang] = useState([
+    { MaDonHang: 1, NgayLap: 1, DiaChi: "SVH", SL: 10, details:[1,2] },
+  ]);
   return (
     <div className="card shadow mb-4">
       <div className="card-header py-3">
-        <h6 className="m-0 font-weight-bold text-primary">
-          Danh Sách
-        </h6>
+        <h6 className="m-0 font-weight-bold text-primary">Danh Sách</h6>
       </div>
       <div className="card-body">
         <div className="table-responsive">
@@ -20,7 +23,6 @@ function TableDonHang() {
                     <input
                       type="search"
                       className="form-control form-control-sm"
-                      placeholder
                       aria-controls="dataTable"
                     />
                   </label>
@@ -48,7 +50,7 @@ function TableDonHang() {
                         colSpan={1}
                         aria-sort="ascending"
                         aria-label="Name: activate to sort column descending"
-                        style={{ width: 120 }}
+                        style={{ width: 100 }}
                       >
                         Mã đơn hàng
                       </th>
@@ -59,7 +61,7 @@ function TableDonHang() {
                         rowSpan={1}
                         colSpan={1}
                         aria-label="Position: activate to sort column ascending"
-                        style={{ width: 135 }}
+                        style={{ width: 120 }}
                       >
                         Ngày lập
                       </th>
@@ -74,7 +76,7 @@ function TableDonHang() {
                       >
                         Địa chỉ
                       </th>
-                      
+
                       <th
                         className="sorting"
                         tabIndex={0}
@@ -82,7 +84,7 @@ function TableDonHang() {
                         rowSpan={1}
                         colSpan={1}
                         aria-label="Start date: activate to sort column ascending"
-                        style={{ width: 80 }}
+                        style={{ width: 60 }}
                       >
                         Số lượng
                       </th>
@@ -97,26 +99,37 @@ function TableDonHang() {
                       >
                         Tổng
                       </th>
+                      <th
+                        className="sorting"
+                        tabIndex={0}
+                        aria-controls="dataTable"
+                        rowSpan={1}
+                        colSpan={1}
+                        aria-label="Salary: activate to sort column ascending"
+                        style={{ width: 160 }}
+                      >
+                      </th>
                     </tr>
                   </thead>
-                  
+
                   <tbody>
-                    <tr className="odd">
-                      <td className="sorting_1">Airi Satou</td>
-                      <td>Accountant</td>
-                      <td>Tokyo</td>
-                      <td>33</td>
-                      <td>2008/11/28</td>
-                  
-                    </tr>
-                    <tr className="even">
-                      <td className="sorting_1">Angelica Ramos</td>
-                      <td>Chief Executive Officer (CEO)</td>
-                      <td>London</td>
-                      <td>47</td>
-                      <td>2009/10/09</td>
-                    </tr>
-              
+                    {donHang.map((item, i) => {
+                      return (
+                        <tr key={i}>
+                          <td className="sorting_1">
+                            <Link to={"./"+item.MaDonHang} state={{ detail: item }}>{item.MaDonHang}</Link>
+                          </td>
+                          <td>{item.NgayLap}</td>
+                          <td>{item.DiaChi}</td>
+                          <td>{item.SL}</td>
+                          <td></td>
+                          <td>
+                            <button className="table-btn apply">Xác nhận</button>
+                            <button className="table-btn cancel">Huỷ đơn</button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -174,7 +187,7 @@ function TableDonHang() {
                         2
                       </a>
                     </li>
-                    
+
                     <li
                       className="paginate_button page-item next"
                       id="dataTable_next"

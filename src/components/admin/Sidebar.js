@@ -15,20 +15,20 @@ function Sidebar(props) {
       id="accordionSidebar"
     >
       {/* Sidebar - Brand */}
-      <Link
+      <span
         className="sidebar-brand d-flex align-items-center justify-content-center"
-        to="/"
+
       >
         <div className="sidebar-brand-icon rotate-n-15">
           <img src={logo} className="sidebar-logo" alt="logo"></img>
         </div>
         <div className="sidebar-brand-text mx-3">PHK Figure</div>
-      </Link>
+      </span>
       {/* Divider */}
       <hr className="sidebar-divider my-0" />
       {/* Nav Item - Dashboard */}
       <li className="nav-item active">
-        <Link className="nav-link" to="/ThongKe">
+        <Link className="nav-link" to="ThongKe">
           <i className="fas fa-solid fa-chart-simple"></i>
           <span>Thống kê</span>
         </Link>
@@ -37,7 +37,7 @@ function Sidebar(props) {
       <hr className="sidebar-divider my-0" />
       {/* Heading */}
       <li className="nav-item active">
-        <Link className="nav-link" to="/DonHang">
+        <Link className="nav-link" to="DonHang">
           <i className="fas fa-sharp fa-solid fa-scroll"></i>
           <span>Đơn hàng</span>
         </Link>
@@ -46,7 +46,7 @@ function Sidebar(props) {
       <hr className="sidebar-divider my-0" />
       {/* Heading */}
       <li className="nav-item active">
-        <Link className="nav-link" to="/SanPham">
+        <Link className="nav-link" to="SanPham">
           <i className="fas fa-boxes"></i>
           <span>Sản phẩm</span>
         </Link>
@@ -54,7 +54,15 @@ function Sidebar(props) {
       <hr className="sidebar-divider my-0" />
       {/* Heading */}
       <li className="nav-item active">
-        <Link className="nav-link" to="/KhachHang">
+        <Link className="nav-link" to="PhanLoai">
+        <i className="fas fa-duotone fa-film"></i>
+          <span>Phân loại</span>
+        </Link>
+      </li>
+      <hr className="sidebar-divider my-0" />
+      {/* Heading */}
+      <li className="nav-item active">
+        <Link className="nav-link" to="KhachHang">
           <i className="fas fa-users"></i>
           <span>Khách hàng</span>
         </Link>
@@ -62,7 +70,7 @@ function Sidebar(props) {
       <hr className="sidebar-divider my-0" />
       {/* Heading */}
       <li className="nav-item active">
-        <Link className="nav-link" to="/CuaHang">
+        <Link className="nav-link" to="CuaHang">
           <i className="fas fa-store"></i>
           <span>Giới thiệu cửa hàng</span>
         </Link>
@@ -70,8 +78,8 @@ function Sidebar(props) {
       <hr className="sidebar-divider my-0" />
       {/* Heading */}
       <li className="nav-item active">
-        <Link className="nav-link" to="/Nhap">
-        <i class="fas fa-solid fa-box-open"></i>
+        <Link className="nav-link" to="Nhap">
+        <i className="fas fa-solid fa-box-open"></i>
           <span>Nhập kho </span>
         </Link>
       </li>
