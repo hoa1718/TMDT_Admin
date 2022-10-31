@@ -1,8 +1,23 @@
 import Table from "../../components/admin/Table/Table_SanPham";
 import Modal from "../../components/admin/Modal/Modal_AddSP";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import SanPhamService from "../../services/SanPhamService";
 function SanPham() {
   const [isOpen, setOpen] = useState(false);
+  const [productList, setProductList] = useState([]);
+
+  const fetchSanPham = async () => {
+    try {
+      const res = await SanPhamService.getSanPham();
+      console.log(res);
+      setProductList(res.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchSanPham();
+  }, []);
+
   return (
     <div className="container-fluid">
       <div className="mb-4 d-sm-flex align-items-center justify-content-between ">
@@ -14,8 +29,8 @@ function SanPham() {
           <i className="fas fa-download fa-sm text-white-50"></i> Tạo sản phẩm
         </button>
       </div>
-      <Table></Table>
-      <Modal open={isOpen} close={() => setOpen(false)}></Modal>
+      <Table productList={productList} setProductList={setProductList} fetchSanPham={fetchSanPham}></Table>
+      <Modal open={isOpen} close={() => setOpen(false)} reload={fetchSanPham}></Modal>
     </div>
   );
 }

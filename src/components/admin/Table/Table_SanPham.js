@@ -1,10 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../../logo.png";
-function TableSanPham() {
-  const [sanPham, setSanPham] = useState([
-    { MaSP: 1, Image:logo, TenSP: "OP", PhanLoai: "Manga", SL: 1 },
-  ]);
+
+import cls from "classnames";
+import { storage } from "../../../firebase";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
+import ImageFromFireBase from "./ImageFromFirebase";
+import SanPhamService from "../../../services/SanPhamService";
+
+const PER_PAGE = 10;
+
+function TableSanPham({ productList, setProductList,fetchSanPham }) {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [search, setSearch] = useState("")
+
+  const totalPage = Math.floor(productList.length / PER_PAGE) + 1;
+
+  const fetchSearch = async ()=>{
+    try {
+      if(search){
+        const res = await  SanPhamService.search(search)
+        console.log(res.data);
+        setProductList(res.data)
+      }else{
+        fetchSanPham()
+      }
+      
+    } catch (error) {
+      
+    }
+  }
+  useEffect(()=>{
+    fetchSearch()
+  },[search])
+
   return (
     <div className="card shadow mb-4">
       <div className="card-header py-3">
@@ -22,6 +52,8 @@ function TableSanPham() {
                   <label>
                     Search:
                     <input
+                      value={search}
+                      onChange={(e)=>setSearch(e.target.value)}
                       type="search"
                       className="form-control form-control-sm"
                       aria-controls="dataTable"
@@ -104,18 +136,31 @@ function TableSanPham() {
                   </thead>
 
                   <tbody>
-                    {sanPham.map((item, i) => {
-                      return (
-                        <tr key={i}>
-                          <td className="sorting_1"><Link to={"./"+item.MaSP} state={{ detail: item }}>{item.MaSP}</Link></td>
-                          <td><img style={{width:"70px"}} src={item.Image}></img></td>
-                          <td>{item.TenSP}</td>
-                          <td>{item.PhanLoai}</td>
-                          <td>{item.SL}</td>
-                        </tr>
-                      );
-                    })}
-                    
+                    {productList
+                      ?.slice(
+                        (currentPage - 1) * 10,
+                        (currentPage - 1) * 10 + 10
+                      )
+                      .map((item, i) => {
+                        return (
+                          <tr key={i}>
+                            <td className="sorting_1">
+                              <Link
+                                to={"./" + item.IdSanPham}
+                                state={{ detail: item }}
+                              >
+                                {item.IdSanPham}
+                              </Link>
+                            </td>
+                            <td>
+                              {item&&<ImageFromFireBase id={item.IdSanPham} />}
+                            </td>
+                            <td>{item.Ten}</td>
+                            <td>{item.TenLoai}</td>
+                            <td>{item.SoLuong}</td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>
@@ -136,8 +181,9 @@ function TableSanPham() {
                 >
                   <ul className="pagination">
                     <li
-                      className="paginate_button page-item previous disabled"
+                      className="paginate_button page-item previous"
                       id="dataTable_previous"
+                      onClick={() => setCurrentPage(currentPage - 1)}
                     >
                       <a
                         href="#"
@@ -149,32 +195,30 @@ function TableSanPham() {
                         Previous
                       </a>
                     </li>
-                    <li className="paginate_button page-item active">
-                      <a
-                        href="#"
-                        aria-controls="dataTable"
-                        data-dt-idx={1}
-                        tabIndex={0}
-                        className="page-link"
+                    {Array.from(new Array(totalPage)).map((number, index) => (
+                      <li
+                        className={cls("paginate_button page-item", {
+                          active: index === currentPage - 1,
+                        })}
+                        key={index}
+                        onClick={() => setCurrentPage(index + 1)}
                       >
-                        1
-                      </a>
-                    </li>
-                    <li className="paginate_button page-item ">
-                      <a
-                        href="#"
-                        aria-controls="dataTable"
-                        data-dt-idx={2}
-                        tabIndex={0}
-                        className="page-link"
-                      >
-                        2
-                      </a>
-                    </li>
+                        <a
+                          href="#"
+                          aria-controls="dataTable"
+                          data-dt-idx={1}
+                          tabIndex={0}
+                          className="page-link"
+                        >
+                          {index + 1}
+                        </a>
+                      </li>
+                    ))}
 
                     <li
                       className="paginate_button page-item next"
                       id="dataTable_next"
+                      onClick={() => setCurrentPage(currentPage + 1)}
                     >
                       <a
                         href="#"
