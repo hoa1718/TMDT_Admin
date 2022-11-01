@@ -6,7 +6,6 @@ function App() {
     <div className="App" id="wrapper">
       <BrowserRouter>
         <Routes>
-
             <Route path="/M/*" element={<Admin></Admin>}></Route>
             <Route path="/Login" element={<Login></Login>}></Route>
 

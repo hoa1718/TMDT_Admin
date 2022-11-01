@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import "../style.css";
+
 
 function Modal({ open, close }) {
   const [items,setItems]= useState([{name:"aa",price:100,quantity:1}]);
   const addItem = () => {
     let name = document.querySelector("#SanPham").value;
-    let quantity = document.querySelector("#SoLuong").value;
-    let item={"name":name,"quantity":quantity}
+    let quantity = Number(document.querySelector("#SoLuong").value);
+    let price = Number(document.querySelector("#GiaNhap").value);
+    if(name==="" || quantity===0 || price===0) return;
+    let item={"name":name,"quantity":quantity,"price":price}
     setItems([...items,item]);
   };
   const minusQuantity = (e,i) => {
@@ -58,7 +60,7 @@ function Modal({ open, close }) {
             <div className="form-input-div">
             <label>Giá nhập: </label>
               <input
-                id="Giá nhập"
+                id="GiaNhap"
                 name="Giá nhập"
                 type="number"
                 placeholder="Giá nhập"

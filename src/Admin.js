@@ -11,8 +11,9 @@ import DonHang_Detail from "./pages/admin/DonHang_Detail";
 import SanPham_Detail from "./pages/admin/SanPham_Detail";
 import KhachHang_Detail from "./pages/admin/KhachHang_Detail";
 import NhapKho_Detail from "./pages/admin/NhapKho_Detail";
-
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import './style/style.css'
+import './components/admin/style.css'
+import {Routes, Route } from "react-router-dom";
 function App() {
   return (
     <>

@@ -136,6 +136,7 @@ function TableSanPham({ productList, setProductList,fetchSanPham }) {
                   </thead>
 
                   <tbody>
+<<<<<<< HEAD
                     {productList
                       ?.slice(
                         (currentPage - 1) * 10,
@@ -161,6 +162,20 @@ function TableSanPham({ productList, setProductList,fetchSanPham }) {
                           </tr>
                         );
                       })}
+=======
+                    {sanPham.map((item, i) => {
+                      return (
+                        <tr key={i}>
+                          <td className="sorting_1"><Link to={"./"+item.MaSP} state={{ detail: item }}>{item.MaSP}</Link></td>
+                          <td><img style={{width:"70px"}} src={item.Image} alt={i}></img></td>
+                          <td>{item.TenSP}</td>
+                          <td>{item.PhanLoai}</td>
+                          <td>{item.SL}</td>
+                        </tr>
+                      );
+                    })}
+                    
+>>>>>>> 69ab8366ff24f9f10adeaab0184cf064c66aa4b7
                   </tbody>
                 </table>
               </div>
