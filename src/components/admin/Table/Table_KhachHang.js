@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-function TableKhachHang() {
-  const [khachHang, setKhachHang] = useState([
-    {
-      MaKhachHang: 1,
-      HoTen: "Hoa",
-      TaiKhoan: "abc",
-      NgaySinh: "1/10",
-      Diem: 1,
-      Locate:[{DiaChi:"SVH",SDT:"113"},{DiaChi:"CT",SDT:"114"}]
-    },
-  ]);
+
+import cls from "classnames";
+
+const PER_PAGE = 10;
+
+function TableKhachHang({userList, setUserList, fetchKhachHang}) {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPage = Math.floor(userList.length / PER_PAGE) + 1;
+
+  useEffect(()=>{
+    fetchKhachHang()
+  },[])
   return (
     <div className="card shadow mb-4">
       <div className="card-header py-3">
@@ -110,7 +112,7 @@ function TableKhachHang() {
                   </thead>
 
                   <tbody>
-                    {khachHang.map((item, i) => {
+                    {/* khachHang.map((item, i) => {
                       return (
                         <tr key={i}>
                           <td className="sorting_1">
@@ -122,7 +124,29 @@ function TableKhachHang() {
                           <td>{item.Diem}</td>
                         </tr>
                       );
-                    })}
+                    }) */}
+                    {userList
+                      ?.slice(
+                        (currentPage - 1) * 10,
+                        (currentPage - 1) * 10 + 10
+                      )
+                      .map((item, i) => {
+                        return (
+                          <tr key={i}>
+                            <td className="sorting_1">
+                            <Link 
+                            to={"./"+item.IdTaiKhoan} 
+                            state={{ detail: item }}>
+                              {item.IdTaiKhoan}
+                            </Link>
+                          </td>
+                            <td>{item.TenKhachHang}</td>
+                            <td>{item.TenDangNhap}</td>
+                            <td>{item.NgaySinh}</td>
+                            <td>{item.DiemThuong}</td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>
@@ -145,6 +169,7 @@ function TableKhachHang() {
                     <li
                       className="paginate_button page-item previous disabled"
                       id="dataTable_previous"
+                      onClick={() => setCurrentPage(currentPage - 1)}
                     >
                       <a
                         href="#"
@@ -156,32 +181,30 @@ function TableKhachHang() {
                         Previous
                       </a>
                     </li>
-                    <li className="paginate_button page-item active">
-                      <a
-                        href="#"
-                        aria-controls="dataTable"
-                        data-dt-idx={1}
-                        tabIndex={0}
-                        className="page-link"
+                    {Array.from(new Array(totalPage)).map((number, index) => (
+                      <li
+                        className={cls("paginate_button page-item", {
+                          active: index === currentPage - 1,
+                        })}
+                        key={index}
+                        onClick={() => setCurrentPage(index + 1)}
                       >
-                        1
-                      </a>
-                    </li>
-                    <li className="paginate_button page-item ">
-                      <a
-                        href="#"
-                        aria-controls="dataTable"
-                        data-dt-idx={2}
-                        tabIndex={0}
-                        className="page-link"
-                      >
-                        2
-                      </a>
-                    </li>
+                        <a
+                          href="#"
+                          aria-controls="dataTable"
+                          data-dt-idx={1}
+                          tabIndex={0}
+                          className="page-link"
+                        >
+                          {index + 1}
+                        </a>
+                      </li>
+                    ))}
 
                     <li
                       className="paginate_button page-item next"
                       id="dataTable_next"
+                      onClick={() => setCurrentPage(currentPage + 1)}
                     >
                       <a
                         href="#"
