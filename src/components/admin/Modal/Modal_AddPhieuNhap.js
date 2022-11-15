@@ -1,32 +1,82 @@
 import React, { useState } from "react";
-
-
+import { useEffect } from "react";
+import NhapHangService from "../../../services/NhapHangService";
+import SanPhamService from "../../../services/SanPhamService";
 function Modal({ open, close }) {
-  const [items,setItems]= useState([{name:"aa",price:100,quantity:1}]);
+  const [date, setDate] = useState("");
+  const [search, setSearch] = useState();
+  const [searchSp, setSearchSp] = useState([]);
+  const [items, setItems] = useState([]);
+  const [currentId, setCurrentId] = useState(null);
+
   const addItem = () => {
     let name = document.querySelector("#SanPham").value;
     let quantity = Number(document.querySelector("#SoLuong").value);
     let price = Number(document.querySelector("#GiaNhap").value);
-    if(name==="" || quantity===0 || price===0) return;
-    let item={"name":name,"quantity":quantity,"price":price}
-    setItems([...items,item]);
+    if (name === "" || quantity === 0 || price === 0) return;
+    let item = { name: name, id: currentId, quantity: quantity, price: price };
+    setItems([...items, item]);
+    setCurrentId(null)
   };
-  const minusQuantity = (e,i) => {
-    
+  const minusQuantity = (e, i) => {
     let num = Number(e.target.nextElementSibling.innerText);
     if (num === 1) return;
     e.target.nextElementSibling.innerHTML = num - 1;
-    items[i].quantity=num-1
+    items[i].quantity = num - 1;
   };
-  const bonusQuantity = (e,i) => {
+  const bonusQuantity = (e, i) => {
     let num = Number(e.target.previousElementSibling.innerText);
     e.target.previousElementSibling.innerHTML = num + 1;
-    items[i].quantity=num+1;
+    items[i].quantity = num + 1;
   };
-  const removeItem = (e,i) => {
+  const removeItem = (e, i) => {
     e.target.parentNode.parentNode.remove();
-    items.splice(i,1);
+    items.splice(i, 1);
   };
+
+  const handleSubMit = async () => {
+    let getData = [{}];
+
+    for (let i of items) {
+      let newdata = {
+        IDNguyenLieu: i.id,
+        SoLuong: i.quantity,
+        GiaNhap: i.price,
+      };
+      getData = [...getData, newdata];
+    }
+
+    const data = {
+      NgayNhap: date,
+      getData: getData.slice(1),
+    };
+
+    console.log("data", data);
+    try {
+      const res = await NhapHangService.createPhieuNhap(data)
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const fetchSearchSp = async () => {
+    try {
+      const res = await SanPhamService.searchSp(search);
+      console.log(res);
+      setSearchSp(res.data);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    const id = setTimeout(() => {
+      if (search&&!currentId) fetchSearchSp();
+      else setCurrentId(null)
+    }, 1000);
+
+    return () => {
+      clearTimeout(id);
+    };
+  }, [search]);
+
   if (!open) return null;
   return (
     <div className="overplay">
@@ -36,19 +86,60 @@ function Modal({ open, close }) {
             X
           </button>
           <h2>Tạo Phiếu Nhập</h2>
-          <form className="form-input" style={{width:"70%"}}>
+          <form className="form-input" style={{ width: "70%" }}>
             <div className="form-input-div">
               <label>Ngày nhập:</label>
-              <input name="NgayNhap" type="date"></input>
+              <input
+                name="NgayNhap"
+                value={date}
+                type="date"
+                onChange={(e) => setDate(e.target.value)}
+              ></input>
             </div>
             <div className="form-input-div">
               <label>Sản phẩm: </label>
-              <input
-                id="SanPham"
-                name="SanPham"
-                type="text"
-                placeholder="Tên sản phẩm"
-              ></input>
+              <div style={{ display: "inline-block", position: "relative" }}>
+                <input
+                  id="SanPham"
+                  name="SanPham"
+                  value={search}
+                  type="text"
+                  placeholder="Tên sản phẩm"
+                  onChange={(e) => setSearch(e.target.value)}
+                ></input>
+                {searchSp.length !== 0 && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "100%",
+                      left: "0",
+                      right: "0",
+                      zIndex: "50",
+                      backgroundColor: "white",
+                      border: "2px solid black",
+                    }}
+                  >
+                    <ul
+                      style={{
+                        listStyle: "none",
+                        padding: 0,
+                        maxHeight: "150px",
+                        overflow: "auto",
+                      }}
+                    >
+                      {searchSp.map((item) => (
+                        <li
+                          key={item.IdSanPham}
+                          onClick={() => {setSearch(item.Ten);setCurrentId(item.IdSanPham);setSearchSp([])}}
+                        >
+                          {item.Ten}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+
               <label style={{ marginLeft: "80px" }}>Số lượng: </label>
               <input
                 id="SoLuong"
@@ -58,13 +149,13 @@ function Modal({ open, close }) {
               ></input>
             </div>
             <div className="form-input-div">
-            <label>Giá nhập: </label>
+              <label>Giá nhập: </label>
               <input
                 id="GiaNhap"
                 name="Giá nhập"
                 type="number"
                 placeholder="Giá nhập"
-                style={{width:"80%"}}
+                style={{ width: "80%" }}
               ></input>
             </div>
             <button onClick={addItem} type="button" className="form-input-btn">
@@ -79,33 +170,36 @@ function Modal({ open, close }) {
                 </tr>
               </thead>
               <tbody>
-                {items.map((item,i)=>{
-                  return(
-                  <tr className="table-result" key={i}>
-                  <td>{item.name}</td>
-                  <td>{item.price}</td>
-                  <td>
-                    <i
-                      onClick={(e) => minusQuantity(e,i)}
-                      className="fa-solid fa-minus minus-btn"
-                    ></i>
-                    <span>{item.quantity}</span>
-                    <i
-                      onClick={(e) => bonusQuantity(e,i)}
-                      className="fa-solid fa-plus plus-btn"
-                    ></i>
-                  </td>
-                  <td>
-                    <i
-                      onClick={(e) => removeItem(e,i)}
-                      className="fas fa-solid fa-trash"
-                    ></i>
-                  </td>
-                  </tr>)
-                })} 
+                {items.map((item, i) => {
+                  return (
+                    <tr className="table-result" key={i}>
+                      <td>{item.name}</td>
+                      <td>{item.price}</td>
+                      <td>
+                        <i
+                          onClick={(e) => minusQuantity(e, i)}
+                          className="fa-solid fa-minus minus-btn"
+                        ></i>
+                        <span>{item.quantity}</span>
+                        <i
+                          onClick={(e) => bonusQuantity(e, i)}
+                          className="fa-solid fa-plus plus-btn"
+                        ></i>
+                      </td>
+                      <td>
+                        <i
+                          onClick={(e) => removeItem(e, i)}
+                          className="fas fa-solid fa-trash"
+                        ></i>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
-            <button className="form-input-btn">Xác nhận</button>
+            <button className="form-input-btn" onClick={handleSubMit}>
+              Xác nhận
+            </button>
           </form>
         </div>
       </div>

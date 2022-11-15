@@ -11,6 +11,7 @@ function Detail() {
   const location = useLocation();
 
   const detail = location.state.detail;
+  // console.log("detail: " , detail);
   const AnRef = useRef(null)
   // console.log(detail);
   
@@ -41,6 +42,8 @@ function Detail() {
       NgaySinh: detail.NgaySinh,
     },
   });
+
+  var date = new Date(detail.NgaySinh).toISOString().substring(0, 10);
   
   const handleUpdate = async(data)=>{
     try {
@@ -128,7 +131,7 @@ function Detail() {
           </div>
           <div className="detailSite-div">
             <span>Ngày sinh:</span>
-            <input {...register("NgaySinh")} type={"date"} style={{width:"30%"}}></input>
+            <input  value={date} type={"date"} style={{width:"30%"}}></input>
 
             <span style={{marginLeft:"20px"}}>Email:</span>
             <input {...register("Email")} type={"text"}></input>

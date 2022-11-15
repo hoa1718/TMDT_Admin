@@ -1,62 +1,60 @@
 import React, { useEffect,useState } from "react";
 import { set } from "react-hook-form";
 import {Link} from "react-router-dom";
-import PhimService from "../../services/PhimService";
+import HangService from "../../services/HangService";
 
 const PER_PAGE = 10;
 
 function Detail({}) {
-  const [phimList, setPhimList] = useState([]);
-  const [loaiList, setLoaiList] = useState([]);
-  const [phimNew, setPhimNew] = useState("");
-  const [theloaiNew, setTheLoaiNew] = useState(1);
-  const fetchPhim= async () => {
+  const [hangList, setHangList] = useState([]);
+  // const [loaiList, setLoaiList] = useState([]);
+  const [tenHang, setTenHang] = useState("");
+  // const [theloaiNew, setTheLoaiNew] = useState(1);
+  const fetchHang= async () => {
     try {
-      const res = await PhimService.getPhim();
+      const res = await HangService.getHang();
       console.log(res);
-      setPhimList(res.data);
+      setHangList(res.data);
     
     } catch (error) {}
   };
-  const fetchPhanLoai= async () => {
-    try {
-      const res = await PhimService.getPhanLoai();
-      console.log(res);
-      setLoaiList(res.data);
-    } catch (error) {}
-  };
+  // const fetchPhanLoai= async () => {
+  //   try {
+  //     const res = await PhimService.getPhanLoai();
+  //     console.log(res);
+  //     setLoaiList(res.data);
+  //   } catch (error) {}
+  // };
   
   useEffect(()=>{
-    fetchPhim()
-    fetchPhanLoai()
+    fetchHang()
   },[])
 
   const handleSubmit = async () => {
     const data = {
-      TenPhim : phimNew,
-      TheLoai : theloaiNew,
+      TenHang : tenHang,
     }
-    setPhimNew("")
+    setTenHang("")
     try {
-      const res = await  PhimService.postPhim(data);
-      console.log(res);
+      const res = await HangService.postHang(data);
+      console.log(data);
     } catch (error) {console.log(error);}
-    fetchPhim()
+    fetchHang()
   }
 
   return (
     <div className="container-fluid">
       <div className="mb-4 d-sm-flex align-items-center justify-content-between ">
-        <h1 className="h3 mb-0 text-gray-800">Phim</h1>
+        <h1 className="h3 mb-0 text-gray-800">Hãng</h1>
       </div>
       <div className="card shadow mb-4">
         <div className="card-header py-3"></div>
         <div className="card-body detailSite">
           <div className="detailSite-div">
-            <span>Tên Phim:</span>
-            <input value={phimNew} onChange={(e)=>setPhimNew(e.target.value)} type={"text"}></input>
+            <span>Tên Hãng:</span>
+            <input value={tenHang} onChange={(e)=>setTenHang(e.target.value)} type={"text"}></input>
           </div>
-          <div className="detailSite-div">
+          {/* <div className="detailSite-div">
             <span>Thể Loại:</span>
             <select value={theloaiNew} onChange={(e)=>setTheLoaiNew(e.target.value)}>
               {loaiList.map((p) => (
@@ -65,7 +63,7 @@ function Detail({}) {
                   </option>
                 ))}
             </select>
-          </div>
+          </div> */}
           <button onClick={handleSubmit} className="form-input-btn" style={{ marginBottom: "10px" }}>
             Thêm
           </button>
@@ -104,10 +102,10 @@ function Detail({}) {
                         aria-label="Position: activate to sort column ascending"
                         style={{ width: 135 }}
                       >
-                        Tên phim
+                        Tên hãng
                       </th>
 
-                      <th
+                      {/* <th
                         className="sorting"
                         tabIndex={0}
                         aria-controls="dataTable"
@@ -117,7 +115,7 @@ function Detail({}) {
                         style={{ width: 80 }}
                       >
                         Thể loại
-                      </th>
+                      </th> */}
                       {/* <th
                         className="sorting"
                         tabIndex={0}
@@ -130,19 +128,19 @@ function Detail({}) {
                     </tr>
                   </thead>
                   <tbody>
-                  {phimList.map((item, i) => {
+                  {hangList.map((item, i) => {
                         return (
                           <tr key={i}>
                             <td className="sorting_1">
                             <Link 
-                            to={"./"+item.IdPhim} 
+                            to={"./"+item.IdHangSx} 
                             state={{ detail: item }}>
-                              {item.IdPhim}
+                              {item.IdHangSx}
                             </Link>
                             </td>
-                            <td>{item.TenPhim}</td>
+                            <td>{item.TenHang}</td>
                             {/* <td>{item.MoTa}</td> */}
-                            <td>{item.TenLoai}</td>
+                            {/* <td>{item.TenLoai}</td> */}
                           </tr>
                         );
                       })}

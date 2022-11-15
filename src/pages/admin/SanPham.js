@@ -9,7 +9,7 @@ function SanPham() {
   const fetchSanPham = async () => {
     try {
       const res = await SanPhamService.getSanPham();
-      console.log(res);
+      // console.log("sanpham",res.data);
       setProductList(res.data);
     } catch (error) {}
   };

@@ -2,17 +2,47 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import cls from "classnames";
+import axiosClient from "../../../axios";
+import KhachHangService from "../../../services/KhachHangService";
+import queryString from "query-string";
+
 
 const PER_PAGE = 10;
 
 function TableKhachHang({userList, setUserList, fetchKhachHang}) {
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [search, setSearch] = useState(null);
   const totalPage = Math.floor(userList.length / PER_PAGE) + 1;
+
+  const fetchSearchKhachHang = async(data)=>{
+    try {
+      const res = await  KhachHangService.getSearchKhach(data)
+      console.log(res);
+      setUserList(res.data)
+    } catch (error) {
+      
+    }
+  }
 
   useEffect(()=>{
     fetchKhachHang()
   },[])
+
+  useEffect(()=>{
+    const id = setTimeout(() => {
+      const data={
+        id: search||null,
+      }
+      const query = queryString.stringify(data);
+
+      fetchSearchKhachHang(query);
+    }, 1000);
+    return () => {
+      clearTimeout(id);
+    };
+  },[search])
+
+
   return (
     <div className="card shadow mb-4">
       <div className="card-header py-3">
@@ -30,9 +60,11 @@ function TableKhachHang({userList, setUserList, fetchKhachHang}) {
                   <label>
                     Search:
                     <input
+                      value={search}
                       type="search"
                       className="form-control form-control-sm"
                       aria-controls="dataTable"
+                      onChange={(e)=>setSearch(e.target.value)}
                     />
                   </label>
                 </div>
@@ -142,7 +174,7 @@ function TableKhachHang({userList, setUserList, fetchKhachHang}) {
                           </td>
                             <td>{item.TenKhachHang}</td>
                             <td>{item.TenDangNhap}</td>
-                            <td>{item.NgaySinh}</td>
+                            <td>{new Date(item.NgaySinh).toLocaleDateString()}</td>
                             <td>{item.DiemThuong}</td>
                           </tr>
                         );

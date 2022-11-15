@@ -1,8 +1,25 @@
 import Table from "../../components/admin/Table/Table_Nhap";
 import Modal from "../../components/admin/Modal/Modal_AddPhieuNhap";
-import React, { useState} from "react";
+import React, { useEffect, useState} from "react";
+import NhapHangService from "../../services/NhapHangService";
+
 function NhapKho() {
     const [isOpen, setOpen] = useState(false);
+    const [phieuNhap, setPhieuHang] = useState([]);
+
+    const fetchPhieu = async()=>{
+      try {
+        const res = await NhapHangService.getNhapHang()
+        setPhieuHang(res.data)
+      } catch (error) {
+        
+      }
+    }
+
+    useEffect(()=>{
+      fetchPhieu()
+    },[])
+
     return (
       <div className="container-fluid">
         <div className="mb-4 d-sm-flex align-items-center justify-content-between ">
@@ -13,7 +30,7 @@ function NhapKho() {
             <i className="fas fa-download fa-sm text-white-50"></i> Tạo phiếu
           </button>
         </div>
-        <Table></Table>
+        <Table phieuNhap={phieuNhap} setPhieuNhap={setPhieuHang} ></Table>
         <Modal open={isOpen} close={()=>setOpen(false)}> </Modal>
     </div>
     );

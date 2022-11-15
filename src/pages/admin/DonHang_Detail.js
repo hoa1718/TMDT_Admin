@@ -1,8 +1,37 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+import formatNum from "../../Format/Format";
+import HoaDonService from "../../services/HoaDonService";
 function Detail() {
   const location = useLocation();
   const detail = location.state.detail;
+  var d = new Date(detail.NgayMua),
+    dformat =
+      [d.getMonth() + 1, d.getDate(), d.getFullYear()].join("/") +
+      " " +
+      [d.getHours() - 7, d.getMinutes(), d.getSeconds()].join(":");
+
+  const handleChapNhan = async () => {
+    try {
+      const res = await HoaDonService.chapNhan(detail.IdHoaDon);
+      alert("Đã xác nhận đơn hàng");  
+    } catch (error) {}
+  };
+  const handleHuyDon = async () => {
+    try {
+      const res = await HoaDonService.huyDon(detail.IdHoaDon);
+      alert("Đã xác nhận hủy đơn hàng");  
+
+    } catch (error) {}
+  };
+  const handleXacNhan = () =>{
+    alert("Đã xác nhận đơn hàng");
+  }
+
+
+  const CHUA_XAC_NHAN = detail.TrangThaiDonHang ===0 && detail.TrangThaiGiaoHang ===0
+  const DA_GIAO = detail.TrangThaiDonHang ===1 && detail.TrangThaiGiaoHang ===1
+  const DA_HUY = detail.TrangThaiDonHang ===-1 && detail.TrangThaiGiaoHang ===-1
   return (
     <div className="container-fluid">
       <div className="mb-4 d-sm-flex align-items-center justify-content-between ">
@@ -10,22 +39,26 @@ function Detail() {
       </div>
       <div className="card shadow mb-4">
         <div className="card-header py-3">
-          <h6 claassName="m-0 font-weight-bold text-primary">Mã đơn hàng:</h6>
-          <button className="table-btn apply">Xác nhận</button>
-          <button className="table-btn cancel">Huỷ đơn</button>
+          <h6 claassName="m-0 font-weight-bold text-primary">
+            Mã đơn hàng:{detail.IdHoaDon}
+          </h6>
+          {CHUA_XAC_NHAN&&<>
+            <button className="table-btn apply" onClick={handleChapNhan}>Xác nhận</button>
+            <button className="table-btn cancel" onClick={handleHuyDon}>Huỷ đơn</button>
+          </>}
         </div>
         <div className="card-body detailSite">
           <div className="detailSite-div">
-            <span>Ngày lập: {detail.NgayLap}</span>
+            <span>Ngày lập: {dformat}</span>
           </div>
           <div className="detailSite-div">
-            <span>Họ tên:</span>
+            <span>Họ tên: {detail.TenKhachHang}</span>
           </div>
           <div className="detailSite-div">
-            <span>Địa chỉ:</span>
+            <span>Địa chỉ: {detail.DiaChi}</span>
           </div>
           <div className="detailSite-div">
-            <span>SĐT:</span>
+            <span>SĐT: {detail.SDT}</span>
           </div>
           <div className="table-responsive">
             <div className="row">
@@ -50,9 +83,7 @@ function Detail() {
                         aria-sort="ascending"
                         aria-label="Name: activate to sort column descending"
                         style={{ width: 120 }}
-                      >
-                        
-                      </th>
+                      ></th>
                       <th
                         className="sorting"
                         tabIndex={0}
@@ -63,7 +94,7 @@ function Detail() {
                         style={{ width: 135 }}
                       >
                         Tên SP
-                      </th>     
+                      </th>
 
                       <th
                         className="sorting"
@@ -101,16 +132,16 @@ function Detail() {
                     </tr>
                   </thead>
                   <tbody>
-                    {detail.details.map((item,i)=>{
-                        return(
-                            <tr key={i}>
-                      <td className="sorting_1"></td>
-                      <td>Accountant</td>
-                      <td>Tokyo</td>
-                      <td>33</td>
-                      <td></td>
-                    </tr>
-                        )
+                    {detail.CT.map((item, i) => {
+                      return (
+                        <tr key={i}>
+                          <td className="sorting_1">{i + 1}</td>
+                          <td>{item.Ten}</td>
+                          <td>{item.SoLuong}</td>
+                          <td>{formatNum(item.DonGiaBan)}</td>
+                          <td>{formatNum(item.Tong)}</td>
+                        </tr>
+                      );
                     })}
                   </tbody>
                 </table>

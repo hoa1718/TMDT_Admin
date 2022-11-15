@@ -1,5 +1,34 @@
+import formatNum from "../../Format/Format";
 
-function Dashboard() {
+function Dashboard( {thongKeThang, thongKeNgay,num ,hoaDon}) {
+  // console.log("HoaDOn",hoaDon);
+  let d;
+  let date;
+   if(thongKeNgay)
+   {
+      d = new Date(thongKeNgay.Ngay)
+     date = d.getDate() + '/'+(d.getMonth()+1)+'/'+d.getFullYear();
+   }
+   else
+   {
+      d = new Date();
+     date = d.getDate() + '/'+(d.getMonth()+1)+'/'+d.getFullYear();
+   }
+
+   let t;
+   if(thongKeThang)
+   {
+      t = thongKeThang.Thang;
+   }
+   else
+   {
+     d = new Date();
+     t = (d.getMonth()+1);
+   }
+
+
+   
+
   return (
     <div className="row">
       {/* Earnings (Monthly) Card Example */}
@@ -9,10 +38,10 @@ function Dashboard() {
             <div className="row no-gutters align-items-center">
               <div className="col mr-2">
                 <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                  Thu Nhập (Tháng)
+                  Thu Nhập ( Tháng {t})
                 </div>
                 <div className="h5 mb-0 font-weight-bold text-gray-800">
-                  $40,000
+                 {thongKeThang ? formatNum(thongKeThang.Tong) : 0 +' VND'}
                 </div>
               </div>
               <div className="col-auto">
@@ -29,10 +58,10 @@ function Dashboard() {
             <div className="row no-gutters align-items-center">
               <div className="col mr-2">
                 <div className="text-xs font-weight-bold text-success text-uppercase mb-1">
-                  Thu nhập (Ngày)
+                  Thu nhập ({date})
                 </div>
                 <div className="h5 mb-0 font-weight-bold text-gray-800">
-                  $215,000
+                  {thongKeNgay ? formatNum(thongKeNgay.Tong) : 0 +' VND'}
                 </div>
               </div>
               <div className="col-auto">
@@ -51,13 +80,10 @@ function Dashboard() {
                 <div className="text-xs font-weight-bold text-danger text-uppercase mb-1">
                   Đơn hàng chưa xử lý
                 </div>
-                <div className="h5 mb-0 font-weight-bold text-gray-800">
-                  2
-                </div>
+                <div className="h5 mb-0 font-weight-bold text-gray-800">{num ?num.Num:0}</div>
               </div>
               <div className="col-auto">
                 <i className="fas fa-solid fa-cash-register fa-2x text-gray-300"></i>
-            
               </div>
             </div>
           </div>
@@ -70,9 +96,9 @@ function Dashboard() {
             <div className="row no-gutters align-items-center">
               <div className="col mr-2">
                 <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                  Tổng đơn hôm nay  
+                  Tổng đơn hôm nay
                 </div>
-                <div className="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                <div className="h5 mb-0 font-weight-bold text-gray-800">{hoaDon ? hoaDon.Hoadon : 0}</div>
               </div>
               <div className="col-auto">
                 <i className="fas fa-solid fa-receipt fa-2x text-gray-300"></i>
@@ -81,6 +107,8 @@ function Dashboard() {
           </div>
         </div>
       </div>
+
+      
     </div>
   );
 }

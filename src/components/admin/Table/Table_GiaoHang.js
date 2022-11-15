@@ -1,15 +1,19 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import queryString from "query-string";
-
-import cls from "classnames";
-import HoaDonService from "../../../services/HoaDonService";
+import GiaoHangService from "../../../services/GiaoHangService";
 import formatNum from "../../../Format/Format";
 
+import cls from "classnames";
 const PER_PAGE = 10;
 
-function TableDonHang({ type, setType, donHang, setDonHang }) {
+function TableGiaoHang({donHang,setDonHang}) {
+
   const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPage = Math.floor(donHang.length / PER_PAGE) + 1;
+
+
 
   const [searchId, setSearchId] = useState("");
 
@@ -17,13 +21,11 @@ function TableDonHang({ type, setType, donHang, setDonHang }) {
 
   const [searchTime, setSearchTime] = useState("");
 
-  const totalPage = Math.floor(donHang.length / PER_PAGE) + 1;
-
-  const searchDonHang = async (data) => {
+  const searchGiaoHang = async (data) => {
     try {
-      const res = await HoaDonService.timKiem(data);
+      const res = await GiaoHangService.timKiem(data);
       console.log(res);
-      setDonHang(res.data);
+      setDonHang(res.data); 
     } catch (error) {}
   };
 
@@ -33,23 +35,24 @@ function TableDonHang({ type, setType, donHang, setDonHang }) {
         id: searchId || null,
         date: searchDate || null,
         time: searchTime || null,
-        type,
       };
       const query = queryString.stringify(data);
 
-      searchDonHang(query);
+      searchGiaoHang(query);
     }, 1000);
 
     return () => {
       clearTimeout(id);
     };
-  }, [searchId, searchDate, searchTime,type]);
+  }, [searchId, searchDate, searchTime]);
+
+
   const handleReset = () => {
     setSearchId("");
     setSearchDate("");
     setSearchTime("");
   };
-
+  // console.log("Every",donHang);
   return (
     <div className="card shadow mb-4">
       <div className="card-header py-3">
@@ -108,16 +111,7 @@ function TableDonHang({ type, setType, donHang, setDonHang }) {
                     Reset
                   </button>
                 </div>
-                <div>
-                  <select
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
-                  >
-                    <option value={1}>Đơn hàng chưa xác nhận</option>
-                    <option value={2}>Đơn hàng đã giao thành công</option>
-                    <option value={3}>Đơn hàng đã hủy</option>
-                  </select>
-                </div>
+                
               </div>
             </div>
             <div className="row">
@@ -198,17 +192,16 @@ function TableDonHang({ type, setType, donHang, setDonHang }) {
                         colSpan={1}
                         aria-label="Salary: activate to sort column ascending"
                         style={{ width: 160 }}
-                      ></th>
+                      >
+                      </th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    {donHang
-                      ?.slice(
+                    {donHang?.slice(
                         (currentPage - 1) * 10,
                         (currentPage - 1) * 10 + 10
-                      )
-                      .map((item, i) => {
+                      ).map((item, i) => {
                         var d = new Date(item.NgayMua),
                           dformat =
                             [
@@ -223,24 +216,20 @@ function TableDonHang({ type, setType, donHang, setDonHang }) {
                               d.getSeconds(),
                             ].join(":");
 
-                        return (
-                          <tr key={i}>
-                            <td className="sorting_1">
-                              <Link
-                                to={"./" + item.IdHoaDon}
-                                state={{ detail: item }}
-                              >
-                                {item.IdHoaDon}
-                              </Link>
-                            </td>
-                            <td>{dformat}</td>
-                            <td>{item.DiaChi}</td>
-                            <td>{item.TongSL}</td>
-                            <td>{formatNum(item.Tong)}</td>
-                            <td></td>
-                          </tr>
-                        );
-                      })}
+                      return (
+                        <tr key={i}>
+                          <td className="sorting_1">
+                            <Link to={"./"+item.IdHoaDon} state={{ detail: item }}>{item.IdHoaDon}</Link>
+                          </td>
+                          <td>{dformat}</td>
+                          <td>{item.DiaChi}</td> 
+                          <td>{item.TongSL}</td>
+                          <td>{formatNum(item.Tong)}</td>
+                          <td>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -296,6 +285,7 @@ function TableDonHang({ type, setType, donHang, setDonHang }) {
                         </a>
                       </li>
                     ))}
+
                     <li
                       className="paginate_button page-item next"
                       id="dataTable_next"
@@ -322,4 +312,4 @@ function TableDonHang({ type, setType, donHang, setDonHang }) {
   );
 }
 
-export default TableDonHang;
+export default TableGiaoHang;
