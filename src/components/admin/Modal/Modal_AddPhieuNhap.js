@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import NhapHangService from "../../../services/NhapHangService";
 import SanPhamService from "../../../services/SanPhamService";
+import formatNum from "../../../Format/Format";
 function Modal({ open, close }) {
   const [date, setDate] = useState("");
   const [search, setSearch] = useState();
   const [searchSp, setSearchSp] = useState([]);
   const [items, setItems] = useState([]);
-  const [currentId, setCurrentId] = useState(null);
+  const [currentId, setCurrentId] = useState();
 
   const addItem = () => {
     let name = document.querySelector("#SanPham").value;
@@ -15,8 +16,9 @@ function Modal({ open, close }) {
     let price = Number(document.querySelector("#GiaNhap").value);
     if (name === "" || quantity === 0 || price === 0) return;
     let item = { name: name, id: currentId, quantity: quantity, price: price };
+    console.log("value",currentId, quantity, price,search);
     setItems([...items, item]);
-    setCurrentId(null)
+
   };
   const minusQuantity = (e, i) => {
     let num = Number(e.target.nextElementSibling.innerText);
@@ -62,20 +64,20 @@ function Modal({ open, close }) {
   const fetchSearchSp = async () => {
     try {
       const res = await SanPhamService.searchSp(search);
-      console.log(res);
+      // console.log(res);
       setSearchSp(res.data);
     } catch (error) {}
   };
-  useEffect(() => {
-    const id = setTimeout(() => {
-      if (search&&!currentId) fetchSearchSp();
-      else setCurrentId(null)
-    }, 1000);
+  // useEffect(() => {
+  //   const id = setTimeout(() => {
+  //     if (search&&!currentId) fetchSearchSp();
+  //     else setCurrentId(null)
+  //   }, 1000);
 
-    return () => {
-      clearTimeout(id);
-    };
-  }, [search]);
+  //   return () => {
+  //     clearTimeout(id);
+  //   };
+  // }, [search]);
 
   if (!open) return null;
   return (
@@ -105,7 +107,7 @@ function Modal({ open, close }) {
                   value={search}
                   type="text"
                   placeholder="Tên sản phẩm"
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) => {setSearch(e.target.value);fetchSearchSp()}}
                 ></input>
                 {searchSp.length !== 0 && (
                   <div
@@ -130,7 +132,7 @@ function Modal({ open, close }) {
                       {searchSp.map((item) => (
                         <li
                           key={item.IdSanPham}
-                          onClick={() => {setSearch(item.Ten);setCurrentId(item.IdSanPham);setSearchSp([])}}
+                          onClick={() => {setCurrentId(item.IdSanPham);setSearch(item.Ten);setSearchSp([])}}
                         >
                           {item.Ten}
                         </li>
@@ -174,7 +176,7 @@ function Modal({ open, close }) {
                   return (
                     <tr className="table-result" key={i}>
                       <td>{item.name}</td>
-                      <td>{item.price}</td>
+                      <td>{formatNum(item.price)}</td>
                       <td>
                         <i
                           onClick={(e) => minusQuantity(e, i)}

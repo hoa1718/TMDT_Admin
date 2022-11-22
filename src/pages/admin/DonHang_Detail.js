@@ -14,12 +14,12 @@ function Detail() {
   const handleChapNhan = async () => {
     try {
       const res = await HoaDonService.chapNhan(detail.IdHoaDon);
-      alert("Đã xác nhận đơn hàng");  
+      alert("Đã xác nhận đơn hàng");   
     } catch (error) {}
   };
   const handleHuyDon = async () => {
     try {
-      const res = await HoaDonService.huyDon(detail.IdHoaDon);
+      const res = await HoaDonService.huyDon(detail.IdHoaDon,detail);
       alert("Đã xác nhận hủy đơn hàng");  
 
     } catch (error) {}

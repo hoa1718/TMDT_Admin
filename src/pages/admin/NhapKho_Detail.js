@@ -147,7 +147,7 @@ function Detail() {
           </div>
         </div>
       </div>
-      <button className="form-input-btn">Cập nhật</button>
+      {/* <button className="form-input-btn">Cập nhật</button> */}
     </div>
   );
 }

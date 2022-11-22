@@ -38,7 +38,7 @@ function Dashboard( {thongKeThang, thongKeNgay,num ,hoaDon}) {
             <div className="row no-gutters align-items-center">
               <div className="col mr-2">
                 <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                  Thu Nhập ( Tháng {t})
+                  Thu Nhập Tháng Này ( Tháng {t})
                 </div>
                 <div className="h5 mb-0 font-weight-bold text-gray-800">
                  {thongKeThang ? formatNum(thongKeThang.Tong) : 0 +' VND'}
@@ -58,7 +58,7 @@ function Dashboard( {thongKeThang, thongKeNgay,num ,hoaDon}) {
             <div className="row no-gutters align-items-center">
               <div className="col mr-2">
                 <div className="text-xs font-weight-bold text-success text-uppercase mb-1">
-                  Thu nhập ({date})
+                  Thu nhập hôm nay ({date})
                 </div>
                 <div className="h5 mb-0 font-weight-bold text-gray-800">
                   {thongKeNgay ? formatNum(thongKeNgay.Tong) : 0 +' VND'}

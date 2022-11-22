@@ -3,9 +3,14 @@ import React, { useEffect, useState } from "react";
 import formatNum from "../../../Format/Format";
 import NhapHangService from "../../../services/NhapHangService";
 import queryString from "query-string";
+import cls from "classnames";
 
+const PER_PAGE = 10;
 
 function TableNhap({phieuNhap,setPhieuNhap}) {
+
+  const [currentPage, setCurrentPage] = useState(1); 
+  const totalPage = Math.floor(phieuNhap.length / PER_PAGE) + 1;
 
   const [ngayNhap, setNgayNhap] = useState(null);
 
@@ -124,7 +129,10 @@ function TableNhap({phieuNhap,setPhieuNhap}) {
                   </thead>
 
                   <tbody>
-                    {phieuNhap.map((item, i) => {
+                    {phieuNhap?.slice(
+                        (currentPage - 1) * 10,
+                        (currentPage - 1) * 10 + 10
+                      ).map((item, i) => {
                       return (
                         <tr key={i}>
                           <td className="sorting_1"><Link to={"./"+item.IdPhieuNhap} state={{ detail: item }}>{item.IdPhieuNhap}</Link></td>
@@ -139,7 +147,75 @@ function TableNhap({phieuNhap,setPhieuNhap}) {
                 </table>
               </div>
             </div>
-           
+            <div className="row">
+              <div className="col-sm-12 col-md-5">
+                <div
+                  className="dataTables_info"
+                  id="dataTable_info"
+                  role="status"
+                  aria-live="polite"
+                ></div>
+              </div>
+              <div className="col-sm-12 col-md-7">
+                <div
+                  className="dataTables_paginate paging_simple_numbers"
+                  id="dataTable_paginate"
+                >
+                  <ul className="pagination">
+                    <li
+                      className="paginate_button page-item previous"
+                      id="dataTable_previous"
+                      onClick={() => setCurrentPage(currentPage - 1)}
+                    >
+                      <a
+                        href="#"
+                        aria-controls="dataTable"
+                        data-dt-idx={0}
+                        tabIndex={0}
+                        className="page-link"
+                      >
+                        Previous
+                      </a>
+                    </li>
+                    {Array.from(new Array(totalPage)).map((number, index) => (
+                      <li
+                        className={cls("paginate_button page-item", {
+                          active: index === currentPage - 1,
+                        })}
+                        key={index}
+                        onClick={() => setCurrentPage(index + 1)}
+                      >
+                        <a
+                          href="#"
+                          aria-controls="dataTable"
+                          data-dt-idx={1}
+                          tabIndex={0}
+                          className="page-link"
+                        >
+                          {index + 1}
+                        </a>
+                      </li>
+                    ))}
+
+                    <li
+                      className="paginate_button page-item next"
+                      id="dataTable_next"
+                      onClick={() => setCurrentPage(currentPage + 1)}
+                    >
+                      <a
+                        href="#"
+                        aria-controls="dataTable"
+                        data-dt-idx={7}
+                        tabIndex={0}
+                        className="page-link"
+                      >
+                        Next
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
