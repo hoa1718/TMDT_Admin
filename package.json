@@ -1,6 +1,6 @@
 {
   "name": "tmdt",
-  "homepage": "/Login",
+  "homepage": "https://tmdt-admin.herokuapp.com/Login",
   "version": "0.1.0",
   "private": true,
   "engines": { "npm": "6.x", "node": "14.x" },
