@@ -17,8 +17,19 @@ import KhachHang_Detail from "./pages/admin/KhachHang_Detail";
 import NhapKho_Detail from "./pages/admin/NhapKho_Detail";
 import './style/style.css'
 import './components/admin/style.css'
-import {Routes, Route } from "react-router-dom";
+import {Routes, Route, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 function App() {
+
+  const user = useSelector((state) => state.auth.user);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) navigate(`/login`);
+  }, [user]);
+
   return (
     <>
         <Sidebar></Sidebar>

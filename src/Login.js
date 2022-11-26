@@ -1,6 +1,21 @@
 import "./style/Login.css";
 import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import AuthService from "./services/AuthService";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "./app/authSlice";
+import { useNavigate } from "react-router-dom";
+
 function Login() {
+  const user = useSelector((state) => state.auth.user);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) navigate(`/m`);
+  }, [user]);
+
   const slide = () => {
     const signUpButton = document.getElementById("signUp");
     const signInButton = document.getElementById("signIn");
@@ -15,26 +30,68 @@ function Login() {
     });
   };
   useEffect(slide);
+
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+  const [error, setError] = useState(false);
+  const dispatch = useDispatch();
+
+  const onSubmit = async (data) => {
+    try {
+      const res = await AuthService.login(data);
+      console.log("Login", res);
+      dispatch(login(res.data));
+    } catch (error) {
+      setError(true);
+    }
+  };
+
   return (
-    <div className="container" id="container" style={{marginTop:"50px"}}>
+    <div className="container" id="container" style={{ marginTop: "50px" }}>
       <div className="form-container sign-up-container">
         <form className="login-form" action="#">
           <h1>Tạo tài khoản</h1>
           <input className="login-input" type="text" placeholder="Name" />
           <input className="login-input" type="email" placeholder="Email" />
-          <input className="login-input" type="password" placeholder="Password" />
-          <button className="login-btn" >Sign Up</button>
+          <input
+            className="login-input"
+            type="password"
+            placeholder="Password"
+          />
+          <button className="login-btn">Sign Up</button>
         </form>
       </div>
       <div className="form-container sign-in-container">
-        <form className="login-form" action="#">
+        <form
+          className="login-form"
+          action="#"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <h1>Đăng nhập</h1>
-          <input className="login-input" type="email" placeholder="Email" />
-          <input className="login-input" type="password" placeholder="Password" />
-          <a className="login-a" href="#">Quên mật khẩu</a>
-          <button  className="login-btn">Đăng nhập</button>
+          <input
+            {...register("username")}
+            className="login-input"
+            type="text"
+            placeholder="Email"
+          />
+          <input
+            {...register("password")}
+            className="login-input"
+            type="password"
+            placeholder="Password"
+          />
+          <a className="login-a" href="#">
+            Quên mật khẩu
+          </a>
+          <button className="login-btn">Đăng nhập</button>
+          {error && <div>Ten dang nhap hoac tai khoan khong dung</div>}
         </form>
       </div>
+
       <div className="overlay-container">
         <div className="overlay">
           <div className="overlay-panel overlay-left">
