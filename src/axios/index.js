@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-    baseURL: 'https://tmdt-server.herokuapp.com/',
+    baseURL: 'http://localhost:4000/',
     headers: {'Content-Type': 'application/json'}
   });
 
