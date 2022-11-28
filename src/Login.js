@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   const user = useSelector((state) => state.auth.user);
-
+  console.log("user", user);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -84,11 +84,9 @@ function Login() {
             type="password"
             placeholder="Password"
           />
-          <a className="login-a" href="#">
-            Quên mật khẩu
-          </a>
+          
           <button className="login-btn">Đăng nhập</button>
-          {error && <div>Ten dang nhap hoac tai khoan khong dung</div>}
+          {error && <div >Tên đăng nhập hoặc mật khẩu không đúng</div>}
         </form>
       </div>
 
