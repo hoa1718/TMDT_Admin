@@ -5,7 +5,7 @@ import SanPhamService from "../../../services/SanPhamService";
 import formatNum from "../../../Format/Format";
 function Modal({ open, close }) {
   const [date, setDate] = useState("");
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
   const [searchSp, setSearchSp] = useState([]);
   const [items, setItems] = useState([]);
   const [currentId, setCurrentId] = useState();
@@ -16,9 +16,8 @@ function Modal({ open, close }) {
     let price = Number(document.querySelector("#GiaNhap").value);
     if (name === "" || quantity === 0 || price === 0) return;
     let item = { name: name, id: currentId, quantity: quantity, price: price };
-    console.log("value",currentId, quantity, price,search);
+    console.log("value", currentId, quantity, price, search);
     setItems([...items, item]);
-
   };
   const minusQuantity = (e, i) => {
     let num = Number(e.target.nextElementSibling.innerText);
@@ -55,18 +54,22 @@ function Modal({ open, close }) {
 
     console.log("data", data);
     try {
-      const res = await NhapHangService.createPhieuNhap(data)
+      const res = await NhapHangService.createPhieuNhap(data);
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  const fetchSearchSp = async () => {
-    try {
-      const res = await SanPhamService.searchSp(search);
-      // console.log(res);
-      setSearchSp(res.data);
-    } catch (error) {}
+  const fetchSearchSp = async (search) => {
+    if (search) {
+      try {
+        const res = await SanPhamService.searchSp(search);
+        // console.log(res);
+        setSearchSp(res.data);
+      } catch (error) {}
+    }else{
+      setSearchSp([])
+    }
   };
   // useEffect(() => {
   //   const id = setTimeout(() => {
@@ -107,7 +110,10 @@ function Modal({ open, close }) {
                   value={search}
                   type="text"
                   placeholder="Tên sản phẩm"
-                  onChange={(e) => {setSearch(e.target.value);fetchSearchSp()}}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    fetchSearchSp(e.target.value);
+                  }}
                 ></input>
                 {searchSp.length !== 0 && (
                   <div
@@ -132,7 +138,11 @@ function Modal({ open, close }) {
                       {searchSp.map((item) => (
                         <li
                           key={item.IdSanPham}
-                          onClick={() => {setCurrentId(item.IdSanPham);setSearch(item.Ten);setSearchSp([])}}
+                          onClick={() => {
+                            setCurrentId(item.IdSanPham);
+                            setSearch(item.Ten);
+                            setSearchSp([]);
+                          }}
                         >
                           {item.Ten}
                         </li>

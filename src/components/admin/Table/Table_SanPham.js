@@ -175,6 +175,27 @@ function TableSanPham({ productList, setProductList,fetchSanPham }) {
                           </tr>
                         );
                       })}
+                      {/* {productList.map((item, i) => {
+                        return (
+                          <tr key={i}>
+                            <td className="sorting_1">
+                              <Link
+                                to={"./" + item.IdSanPham}
+                                state={{ detail: item }}
+                              >
+                                {item.IdSanPham}
+                              </Link>
+                            </td>
+                            <td>
+                              {item&&<ImageFromFireBase id={item.IdSanPham} />}
+                            </td>
+                            <td>{item.Ten}</td>
+                            <td>{item.TenLoai}</td>
+                            <td>{item.SoLuong}</td>
+                            <td>{item.GiaNhap ? formatNum(item.GiaNhap) : 0}</td>
+                          </tr>
+                        );
+                      })} */}
                   </tbody>
                 </table>
               </div>
@@ -200,7 +221,6 @@ function TableSanPham({ productList, setProductList,fetchSanPham }) {
                       onClick={() => setCurrentPage(currentPage - 1)}
                     >
                       <a
-                        href="#"
                         aria-controls="dataTable"
                         data-dt-idx={0}
                         tabIndex={0}
@@ -218,7 +238,6 @@ function TableSanPham({ productList, setProductList,fetchSanPham }) {
                         onClick={() => setCurrentPage(index + 1)}
                       >
                         <a
-                          href="#"
                           aria-controls="dataTable"
                           data-dt-idx={1}
                           tabIndex={0}
@@ -235,7 +254,6 @@ function TableSanPham({ productList, setProductList,fetchSanPham }) {
                       onClick={() => setCurrentPage(currentPage + 1)}
                     >
                       <a
-                        href="#"
                         aria-controls="dataTable"
                         data-dt-idx={7}
                         tabIndex={0}

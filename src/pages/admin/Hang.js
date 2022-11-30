@@ -138,7 +138,7 @@ function Detail({}) {
                               {item.IdHangSx}
                             </Link>
                             </td>
-                            <td>{item.TenHang}</td>
+                            <td>{item.Ten}</td>
                             {/* <td>{item.MoTa}</td> */}
                             {/* <td>{item.TenLoai}</td> */}
                           </tr>

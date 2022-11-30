@@ -157,7 +157,24 @@ function TableKhachHang({userList, setUserList, fetchKhachHang}) {
                         </tr>
                       );
                     }) */}
-                    {userList
+                    {/* {userList.map((item, i) => {
+                        return (
+                          <tr key={i}>
+                            <td className="sorting_1">
+                            <Link 
+                            to={"./"+item.IdTaiKhoan} 
+                            state={{ detail: item }}>
+                              {item.IdTaiKhoan}
+                            </Link>
+                          </td>
+                            <td>{item.TenKhachHang}</td>
+                            <td>{item.TenDangNhap}</td>
+                            <td>{new Date(item.NgaySinh).toLocaleDateString()}</td>
+                            <td>{item.DiemThuong}</td>
+                          </tr>
+                        );
+                      })} */}
+                      {userList
                       ?.slice(
                         (currentPage - 1) * 10,
                         (currentPage - 1) * 10 + 10
@@ -204,7 +221,6 @@ function TableKhachHang({userList, setUserList, fetchKhachHang}) {
                       onClick={() => setCurrentPage(currentPage - 1)}
                     >
                       <a
-                        href="#"
                         aria-controls="dataTable"
                         data-dt-idx={0}
                         tabIndex={0}
@@ -222,7 +238,6 @@ function TableKhachHang({userList, setUserList, fetchKhachHang}) {
                         onClick={() => setCurrentPage(index + 1)}
                       >
                         <a
-                          href="#"
                           aria-controls="dataTable"
                           data-dt-idx={1}
                           tabIndex={0}
@@ -239,7 +254,6 @@ function TableKhachHang({userList, setUserList, fetchKhachHang}) {
                       onClick={() => setCurrentPage(currentPage + 1)}
                     >
                       <a
-                        href="#"
                         aria-controls="dataTable"
                         data-dt-idx={7}
                         tabIndex={0}

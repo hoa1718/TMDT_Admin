@@ -28,7 +28,7 @@ function Detail() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      TenSp: detail.Ten,
+      TenSp: detail.Ten[0],
       IdPhim: detail.IdPhim,
       IdHang: detail.IdHangSx,
       ChieuCao: detail.ChieuCao,
@@ -224,7 +224,7 @@ function Detail() {
             {hang.length!==0&&<select {...register("IdHang")}>
               {hang.map((p) => (
                 <option key={p.IdHangSx} value={p.IdHangSx}>
-                  {p.TenHang}
+                  {p.Ten}
                 </option>
               ))}
             </select>}

@@ -163,7 +163,7 @@ function Modal({ open, close , reload}) {
               >
                 {hang.map((p) => (
                   <option key={p.IdHangSx} value={p.IdHangSx}>
-                    {p.TenHang}
+                    {p.Ten}
                   </option>
                 ))}
               </select>

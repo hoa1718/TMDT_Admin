@@ -29,7 +29,7 @@ function Detail() {
       <div className="card shadow mb-4">
         <div className="card-header py-3">
           <h6 className="m-0 font-weight-bold text-primary">
-            Mã phiếu: {detail.MaPhieu}
+            Mã phiếu: {detail.IdPhieuNhap}
           </h6>
         </div>
         <div className="card-body detailSite">

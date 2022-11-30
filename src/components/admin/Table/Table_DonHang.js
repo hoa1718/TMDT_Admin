@@ -268,7 +268,6 @@ function TableDonHang({ type, setType, donHang, setDonHang }) {
                       onClick={() => setCurrentPage(currentPage - 1)}
                     >
                       <a
-                        href="#"
                         aria-controls="dataTable"
                         data-dt-idx={0}
                         tabIndex={0}
@@ -286,7 +285,6 @@ function TableDonHang({ type, setType, donHang, setDonHang }) {
                         onClick={() => setCurrentPage(index + 1)}
                       >
                         <a
-                          href="#"
                           aria-controls="dataTable"
                           data-dt-idx={1}
                           tabIndex={0}
@@ -302,7 +300,6 @@ function TableDonHang({ type, setType, donHang, setDonHang }) {
                       onClick={() => setCurrentPage(currentPage + 1)}
                     >
                       <a
-                        href="#"
                         aria-controls="dataTable"
                         data-dt-idx={7}
                         tabIndex={0}

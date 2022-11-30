@@ -142,6 +142,16 @@ function TableNhap({phieuNhap,setPhieuNhap}) {
                         </tr>
                       );
                     })}
+                    {/* {phieuNhap.map((item, i) => {
+                      return (
+                        <tr key={i}>
+                          <td className="sorting_1"><Link to={"./"+item.IdPhieuNhap} state={{ detail: item }}>{item.IdPhieuNhap}</Link></td>
+                          <td>{new Date(item.NgayNhap).toLocaleDateString()}</td>
+                          <td>{item.SL}</td>
+                          <td>{formatNum(item.Tong)}</td>
+                        </tr>
+                      );
+                    })} */}
                     
                   </tbody>
                 </table>
@@ -168,7 +178,6 @@ function TableNhap({phieuNhap,setPhieuNhap}) {
                       onClick={() => setCurrentPage(currentPage - 1)}
                     >
                       <a
-                        href="#"
                         aria-controls="dataTable"
                         data-dt-idx={0}
                         tabIndex={0}
@@ -186,7 +195,6 @@ function TableNhap({phieuNhap,setPhieuNhap}) {
                         onClick={() => setCurrentPage(index + 1)}
                       >
                         <a
-                          href="#"
                           aria-controls="dataTable"
                           data-dt-idx={1}
                           tabIndex={0}
@@ -203,7 +211,6 @@ function TableNhap({phieuNhap,setPhieuNhap}) {
                       onClick={() => setCurrentPage(currentPage + 1)}
                     >
                       <a
-                        href="#"
                         aria-controls="dataTable"
                         data-dt-idx={7}
                         tabIndex={0}
